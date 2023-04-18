@@ -12,8 +12,8 @@ model = keras.models.load_model('face_classification_model.h5')
 # Définir la taille d'entrée attendue pour le modèle
 input_shape = (48, 48, 1)
 
-# Définir les classes d'images
-class_names = ['Bad', 'Good']
+# Définir les classes d'images ('angry', 'disgusted', 'fearful', 'happy', 'neutral', 'sad', 'surprised')
+class_names = ['Colere', 'Degout', 'Peur', 'Joie', 'Neutre', 'Tristesse', 'Surprise']
 
 # Configurer la caméra
 cap = cv2.VideoCapture(0)
@@ -56,14 +56,36 @@ while True:
         prediction = model.predict(img_tensor)
         
         # Afficher la classe prédite sur la frame
-        if prediction[0][0] > prediction[0][1]:
-            # Afficher un rectangle rouge autour du visage si la classe prédite est 'Bad'
-            cv2.rectangle(frame, (x * 2, y * 2), ((x + w) * 2, (y + h) * 2), (0, 0, 255), 2)
-            cv2.putText(frame, "Bad", (x * 2, y * 2 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
-        else:
-            # Afficher un rectangle vert autour du visage si la classe prédite est 'Good'
-            cv2.rectangle(frame, (x * 2, y * 2), ((x + w) * 2, (y + h) * 2), (0, 255, 0), 2)
-            cv2.putText(frame, "Good", (x * 2, y * 2 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+        max_index = np.argmax(prediction)
+        predicted_class = class_names[max_index]
+        
+        # Afficher un rectangle coloré autour du visage en fonction de la classe prédite
+        color = (0, 0, 0)
+        if predicted_class == 'Colere':
+            color = (0, 0, 255)
+        elif predicted_class == 'Degout':
+            color = (0, 128, 0)
+        elif predicted_class == 'Peur':
+            color = (255, 255, 0)
+        elif predicted_class == 'Joie':
+            color = (0, 255, 0)
+        elif predicted_class == 'Neutre':
+            color = (128, 128, 128)
+        elif predicted_class == 'Tristesse':
+            color = (255, 0, 0)
+        elif predicted_class == 'Surprise':
+            color = (255, 0, 255)
+            
+        # Calculer la taille du texte
+        text_size = cv2.getTextSize(predicted_class, cv2.FONT_HERSHEY_SIMPLEX, 0.8, 2)[0]
+
+        # Calculer les coordonnées du coin supérieur gauche de la boîte de texte centrée
+        text_x = x + (w - text_size[0]) // 2
+        text_y = y - text_size[1] - 5
+        
+        # Dessiner la boîte de délimitation et le texte
+        cv2.rectangle(frame, (x, y), ((x + w), (y + h)), color, 2)
+        cv2.putText(frame, predicted_class, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2)
 
     # Afficher la frame
     cv2.imshow('Face Classification', frame)

@@ -3,13 +3,13 @@ from keras.preprocessing.image import ImageDataGenerator
 
 # Définir les chemins vers les dossiers contenant les données d'entrainement et de validation
 train_dir = "dataset/train"
-val_dir = "dataset/validation"
+val_dir = "dataset/test"
 
 # Définir les paramètres d'entrainement du modèle
 batch_size = 32 # Nombre d'images utilitées pour une itération du gradient descendant
 epochs = 100 # Nombre d'itérations sur l'ensemble des données d'entrainement
 input_shape = (48, 48, 1) # Dimensions des images d'entrée (largeur, hauteur, nombre de canaux)
-num_classes = 2 # Nomre de classes de sortie (2 pour un problème de classification binaire)
+num_classes = 7 # Nomre de classes de sortie (mis à jour avec les nouvelles classes ajoutées)
 
 # Prétraiter les images en les redimensionnant et en les normalisant
 train_datagen = ImageDataGenerator(rescale=1./255) # Applique une mise à l'échelle à chaque pixel pour normaliser les valeurs de chaque canal de couleur entre 0 et 1
