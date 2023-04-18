@@ -22,6 +22,10 @@ cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
 
+# Initialiser le nombre de prédictions passées à prendre en compte
+past_predictions = 10
+prediction_list = []
+
 # Boucle principale
 while True:
     # Capturer une image
