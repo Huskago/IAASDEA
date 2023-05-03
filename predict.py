@@ -7,7 +7,7 @@ import numpy as np
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 # Charger le modèle préalablement entrainé
-model = keras.models.load_model('face_classification_model.h5')
+model = keras.models.load_model('model-best.h5')
 
 # Définir la taille d'entrée attendue pour le modèle
 input_shape = (48, 48, 1)
@@ -59,8 +59,17 @@ while True:
         # Prédire la classe de l'image du visage
         prediction = model.predict(img_tensor)
         
-        # Afficher la classe prédite sur la frame
-        max_index = np.argmax(prediction)
+        # Ajouter la prédiction dans la liste
+        prediction_list.append(prediction)
+        
+        if len(prediction) > past_predictions:
+            prediction_list.pop(0)
+            
+        # Calculer la moyenne des prédictions
+        avg_prediction = np.mean(prediction_list, axis=0)
+        
+        # Trouver la classe prédite avec la probabilité la plus élevée
+        max_index = np.argmax(avg_prediction)
         predicted_class = class_names[max_index]
         
         # Afficher un rectangle coloré autour du visage en fonction de la classe prédite
