@@ -7,7 +7,9 @@ import numpy as np
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 # Charger le modèle préalablement entrainé
-model = keras.models.load_model('model-best.h5')
+model = keras.models.load_model('face_classification_model.h5')
+
+print(type(model))
 
 # Définir la taille d'entrée attendue pour le modèle
 input_shape = (48, 48, 1)
@@ -38,7 +40,7 @@ while True:
     small_frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
     
     # Convertir l'image en niveaux de gris
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(small_frame, cv2.COLOR_BGR2GRAY)
     
     # Détecter les visages dans l'image
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
