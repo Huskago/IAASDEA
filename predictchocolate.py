@@ -1,7 +1,6 @@
-import iaasdea
+from iaasdea import IAASDEA
 
-iaasdea = iaasdea.IAASDEA()
-
+iaasdea = IAASDEA()
 emotion = iaasdea.getPredictFromVideo("video.mkv")
 
 print(emotion)

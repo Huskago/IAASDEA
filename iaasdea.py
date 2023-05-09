@@ -1,6 +1,7 @@
 from tensorflow import keras
 import cv2
 import numpy as np
+import urllib.request
 
 from enum import Enum
 
@@ -22,6 +23,11 @@ class IAASDEA:
 
     def setModel(self, model):
         self.model = keras.models.load_model(model)
+        
+    def setModelFromUrl(self, url):
+        file_name = url.split("/")[-1]
+        urllib.request.urlretrieve(url, file_name)
+        self.setModel(file_name)
 
     def setInputShape(self, input_shape):
         self.input_shape = input_shape
