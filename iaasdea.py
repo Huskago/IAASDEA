@@ -13,6 +13,24 @@ class Emotion(Enum):
     Neutre = 4
     Tristesse = 5
     Surprise = 6
+    
+    def getName(emotion):
+        if emotion == 0:
+            return "Colere"
+        elif emotion == 1:
+            return "Degout"
+        elif emotion == 2:
+            return "Peur"
+        elif emotion == 3:
+            return "Joie"
+        elif emotion == 4:
+            return "Neutre"
+        elif emotion == 5:
+            return "Tristesse"
+        elif emotion == 6:
+            return "Surprise"
+        else:
+            return "Unknown"
 
 class IAASDEA:
     input_shape = (48, 48, 1)
@@ -65,3 +83,11 @@ class IAASDEA:
 
         emotion = Emotion(max_index)
         return emotion
+     
+    def getFirstFrameFromVideo(self, video_path):
+        video = cv2.VideoCapture(video_path)
+        ret, frame = video.read()
+        if not ret:
+            print("Unable to get video")
+            return None
+        return frame
